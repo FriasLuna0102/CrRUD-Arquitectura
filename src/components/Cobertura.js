@@ -2,19 +2,12 @@ import React, { useState } from 'react';
 import backgroundImage from './../img/Best-Website-New-Wallpaper.jpg';
 // Exporta la lista de coberturas como una constante nombrada
 
-
-
-
-
-
-
 export default function CoberturaFormulario() {
     const [descripcion, setDescripcion] = useState('');
     const [riesgo, setRiesgo] = useState('');
     const [porcentajeCobertura, setPorcentajeCobertura] = useState('');
     const [montoCobertura, setMontoCobertura] = useState('');
     const [deducible, setDeducible] = useState('');
-
     const handleSubmit = (e) => {
         e.preventDefault();
         // Aquí puedes manejar la lógica de envío del formulario, como enviar los datos a un servidor o realizar alguna acción con ellos
@@ -24,6 +17,14 @@ export default function CoberturaFormulario() {
         console.log('Monto de Cobertura:', montoCobertura);
         console.log('Deducible:', deducible);
 
+        // Primero, obtenemos el array de coberturas existente del almacenamiento local
+        let coberturas = JSON.parse(localStorage.getItem('coberturas'));
+
+        // Si no hay un array de coberturas existente, inicializamos uno vacío
+        if (!coberturas) {
+            coberturas = [];
+        }
+
         const cobertura = {
             descripcion:descripcion,
             riegos: riesgo,
@@ -31,9 +32,12 @@ export default function CoberturaFormulario() {
             montoCobertura:montoCobertura,
             deducible:deducible
         };
-        console.log(cobertura.descripcion)
-        window.listCoberturas = [];
-        window.listCoberturas.push(cobertura)
+
+        // Agregamos el nuevo objeto de cobertura al array
+        coberturas.push(cobertura);
+
+        // Guardamos el array actualizado en el almacenamiento local
+        localStorage.setItem('coberturas', JSON.stringify(coberturas));
 
         fetch("http://localhost:8080/crearCobertura", {
             method: "POST",
@@ -50,6 +54,7 @@ export default function CoberturaFormulario() {
             });
 
     };
+
 
     return (
         <div className="container">

@@ -1,20 +1,26 @@
-import React, { useState } from 'react';
-// import { listCoberturas } from './Cobertura'; // Importa listCoberturas utilizando llaves {}
-//
- console.log("La lista de coberturas", window.listCoberturas);
+import React, { useState, useEffect } from 'react';
+
 
 function RamoProductoFormulario() {
     const [tipo, setTipo] = useState('');
     const [descripcion, setDescripcion] = useState('');
-    const [cobertura, setCobertura] = useState('');
     const [porcentajeComision, setPorcentajeComision] = useState('');
 
+
+    const [coberturaSeleccionada, setCoberturaSeleccionada] = useState('');
+    const [coberturas, setCoberturas] = useState([]);
+
+    useEffect(() => {
+        const cobertura = JSON.parse(localStorage.getItem('coberturas'));
+        if (cobertura) {
+            setCoberturas(cobertura); // Aquí cambiamos [cobertura] por cobertura
+        }
+    }, []);
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Lógica de envío del formulario
         console.log('Tipo:', tipo);
         console.log('Descripción:', descripcion);
-        console.log('Cobertura:', cobertura);
+        console.log('Cobertura:', coberturaSeleccionada);
         console.log('Porcentaje de Comisión:', porcentajeComision);
 
         const ramoProducto = {
@@ -44,10 +50,7 @@ function RamoProductoFormulario() {
             .catch(error => {
                 console.error('Error:', error);
             });
-
     };
-
-
 
     return (
         <div className="container">
@@ -76,14 +79,20 @@ function RamoProductoFormulario() {
                 </div>
                 <div className="mb-3">
                     <label htmlFor="cobertura" className="form-label">Cobertura:</label>
-                    <input
-                        type="text"
-                        className="form-control"
+                    <select
+                        className="form-select"
                         id="cobertura"
-                        value={cobertura}
-                        onChange={(e) => setCobertura(e.target.value)}
+                        value={coberturaSeleccionada}
+                        onChange={(e) => setCoberturaSeleccionada(e.target.value)}
                         required
-                    />
+                    >
+                        <option value="">Seleccione una cobertura</option>
+                        {coberturas.map((cobertura, index) => (
+                            <option key={index} value={cobertura.descripcion}>
+                                {cobertura.descripcion}
+                            </option>
+                        ))}
+                    </select>
                 </div>
                 <div className="mb-3">
                     <label htmlFor="porcentajeComision" className="form-label">Porcentaje de Comisión:</label>
