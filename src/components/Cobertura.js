@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import backgroundImage from './../img/Best-Website-New-Wallpaper.jpg';
 // Exporta la lista de coberturas como una constante nombrada
-
+import { useNavigate } from 'react-router-dom';
 export default function CoberturaFormulario() {
+    const history = useNavigate();
+
     const [descripcion, setDescripcion] = useState('');
     const [riesgo, setRiesgo] = useState('');
     const [porcentajeCobertura, setPorcentajeCobertura] = useState('');
@@ -16,6 +18,7 @@ export default function CoberturaFormulario() {
         console.log('Porcentaje de Cobertura:', porcentajeCobertura);
         console.log('Monto de Cobertura:', montoCobertura);
         console.log('Deducible:', deducible);
+        history('/verCoberturas');
 
         // Primero, obtenemos el array de coberturas existente del almacenamiento local
         let coberturas = JSON.parse(localStorage.getItem('coberturas'));
@@ -27,7 +30,7 @@ export default function CoberturaFormulario() {
 
         const cobertura = {
             descripcion:descripcion,
-            riegos: riesgo,
+            riesgo: riesgo,
             porcentajeCobertura: porcentajeCobertura,
             montoCobertura:montoCobertura,
             deducible:deducible
@@ -120,6 +123,12 @@ export default function CoberturaFormulario() {
                 </div>
                 <button type="submit" className="btn btn-primary">Enviar</button>
             </form>
+            <p></p>
+            <a type="button" className="btn btn-success" id="cober" href="/verCoberturas">Ver Coberturas</a>
+            <p></p>
+            <div>
+                <a type="button" className="btn btn-warning" href="/">Atras</a>
+            </div>
         </div>
     );
 }

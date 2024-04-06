@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 
 function RamoProductoFormulario() {
+
+    const history = useNavigate();
     const [tipo, setTipo] = useState('');
     const [descripcion, setDescripcion] = useState('');
     const [porcentajeComision, setPorcentajeComision] = useState('');
@@ -22,19 +25,35 @@ function RamoProductoFormulario() {
         console.log('Descripción:', descripcion);
         console.log('Cobertura:', coberturaSeleccionada);
         console.log('Porcentaje de Comisión:', porcentajeComision);
+        history('/verRamoProductors');
+
+        const buscarCoberturaPorDescripcion = (descripcion) => {
+            return coberturas.find(cobertura => cobertura.descripcion === descripcion);
+        };
+
+
+        const cobertura = buscarCoberturaPorDescripcion(coberturaSeleccionada);
+
+        // Primero, obtenemos el array de coberturas existente del almacenamiento local
+        let ramosProductos = JSON.parse(localStorage.getItem('ramoProducto'));
+
+        // Si no hay un array de coberturas existente, inicializamos uno vacío
+        if (!ramosProductos) {
+            ramosProductos = [];
+        }
+
 
         const ramoProducto = {
-            tipo: 'Propiedad',
-            descripcion: 'qq',
-            cobertura: {
-                descripcion: 'Primera Cobertura',
-                riesgo: 'riesgo',
-                porcentajeCobertura: 0.5,
-                montoCobertura: 1000,
-                deducible: 200
-            },
-            porcentajeComision: '22'
+            tipo: tipo,
+            descripcion: descripcion,
+            cobertura: cobertura,
+            porcentajeComision: porcentajeComision
         };
+
+        console.log(ramoProducto.porcentajeComision)
+        ramosProductos.push(ramoProducto)
+        // Guardamos el array actualizado en el almacenamiento local
+        localStorage.setItem('ramoProducto', JSON.stringify(ramosProductos));
 
 
         fetch("http://localhost:8080/crearRamoProducto", {
@@ -107,6 +126,12 @@ function RamoProductoFormulario() {
                 </div>
                 <button type="submit" className="btn btn-primary">Enviar</button>
             </form>
+            <p></p>
+            <a type="button" className="btn btn-success" href="/verRamoProductors">Ver Ramos Productos </a>
+            <p></p>
+            <div>
+                <a type="button" className="btn btn-warning" href="/">Atras</a>
+            </div>
         </div>
     );
 }

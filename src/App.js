@@ -12,6 +12,8 @@ import NavLateral from "./components/NavLateral"
 import React from "react";
 import Cobertura from "./components/Cobertura";
 import backgroundImage from "./img/Best-Website-New-Wallpaper.jpg";
+import ListaCoberturas from "./components/listarCoberturas";
+import ListaRamoProducto from "./components/ListarRamoProducto";
 
 export default App
 
@@ -25,6 +27,8 @@ function App() {
                 <Routes>
                     <Route path="/cobertura" element={<Cobertura/>}/>
                     <Route path="/formulario" element={<Formulario/>}/>
+                    <Route path="/verCoberturas" element={<ListaCoberturas/>}/>
+                    <Route path="/verRamoProductors" element={<ListaRamoProducto/>}/>
 
                     <Route path={"/"} element={
 
