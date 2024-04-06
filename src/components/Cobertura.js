@@ -77,6 +77,7 @@ export default function CoberturaFormulario() {
                         required
                     />
                 </div>
+
                 <div className="mb-3">
                     <label htmlFor="porcentajeCobertura" className="form-label">Porcentaje de Cobertura:</label>
                     <input
